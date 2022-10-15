@@ -1,0 +1,44 @@
+DROP TABLE IF EXISTS NK225MINI;
+CREATE TABLE NK225MINI (
+  trd_date DATE ,
+  trd_time TIME ,
+  mk_date DATE ,
+  price INT ,
+  price_type CHAR ,
+  vol INT ,
+  no INT ,
+  PRIMARY KEY (trd_date, no)
+) ENGINE=MyISAM;
+
+
+
+
+-- 新しくデータベースを作成する
+CREATE DATABASE backtest;
+
+-- 新しくユーザーを作成する
+CREATE USER 'hons'@'%' IDENTIFIED BY 'hons';
+
+-- 作成したユーザーに作成したデータベースの操作権限を付与する
+GRANT ALL PRIVILEGES ON backtest.* TO 'hons'@'%';
+
+-- 設定を反映する
+FLUSH PRIVILEGES;
+
+----- my.iniの任意の箇所に追加 -----
+interactive_timeout = (タイムアウトまでの秒数)
+------------------------------------
+10時間にしたけりゃ 24 * 5(h)×60(m)×60(s)＝36000(s) で
+set global interactive_timeout=432000;
+set global wait_timeout=432000;
+
+show global variables like '%wait_timeout%';
+show global variables like '%interactive_timeout%';
+
+
+C:\ProgramData\MySQL\MySQL Server 5.7\my.ini
+
+interactive_timeout=432000
+wait_timeout=432000
+
+

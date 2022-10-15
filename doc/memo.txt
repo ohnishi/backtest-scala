@@ -1,0 +1,37 @@
+
+
+sbt flywayMigrate
+sbt flywayClean
+
+psql -d backtest
+
+
+select * from NK225MINI where trd_date >= ‘2016-01-04′ and trd_date < ‘2016-01-15′ order by trd_date, no;
+select * from NK225MINI where price_type = 'O' order by trd_date, no;
+
+
+select * from NK225MINI where trd_date > to_date('2016-01-04', 'YYYY-MM-DD') limit 10;
+select * from NK225MINI limit 10;
+
+\d
+
+
+
+-Xms8g -Xmx24g -server -Dscala.concurrent.context.maxThreads=3
+
+
+
+find /Users/hons/dev/scala/backtest/db/225mini -name NK225MF_*_*.CSV | xargs rm -f
+
+
+sbt clean
+
+sbt assembly
+
+
+
+mv /Users/hons/dev/scala/backtest/target/scala-2.11/backtest-assembly-1.0.jar ~
+mv /Users/hons/dev/scala/backtest/target/scala-2.11/backtest-assembly-1.0.jar /Users/hons/Public
+cd ~
+java -cp backtester-assembly-1.0.jar analysis.AnalyzerMonthlyOne -Xms8g -Xmx24g -Dscala.concurrent.context.maxThreads=3 -server
+
